@@ -11,7 +11,7 @@
 <xsl:template match="PROJECT | MODULE | COMPU_METHOD | MEASUREMENT">
 /begin <xsl:value-of select ="name(.)"/>
     <xsl:text> </xsl:text>
-	<xsl:value-of select="@name"/> <xsl:choose><xsl:when test="@dimension">[<xsl:value-of select="@dimension"/>]</xsl:when></xsl:choose> "<xsl:value-of select="@comment"/>"
+	<xsl:value-of select="@name"/> <xsl:choose><xsl:when test="@dimension">[<xsl:value-of select="@dim"/>]</xsl:when></xsl:choose> "<xsl:value-of select="@comment"/>"
  	<xsl:apply-templates /> 
 /end <xsl:value-of select ="name(.)"/>
 </xsl:template>
@@ -106,7 +106,7 @@
 </xsl:template>
 
 <xsl:template match="*">
-TODO: <xsl:value-of select ="name(.)"/>
+TODO: <xsl:value-of select ="name(.)"/><xsl:choose><xsl:when test="@dimension">[<xsl:value-of select="@dim"/>]</xsl:when></xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>

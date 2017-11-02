@@ -205,7 +205,7 @@ def processBlock(current, pos, blkname):
         [pos, tt, comment] = getNextToken(pos)
         if tt == "BEGINDIM":
             [pos, tt, dimension] = getNextToken(pos)
-            current.attrib["dimension"] = dimension
+            current.attrib["dim"] = dimension
             [pos, tt, dimension] = getNextToken(pos) # enddim
             [pos, tt, comment] = getNextToken(pos) # next should be comment
         if tt != "STRING":
@@ -371,8 +371,17 @@ while pos < length:
     elif Token == "STAR":
         child = etree.Element("star")
         current.append(child)
-    elif Token == "ENDE": 
+    elif Token == "BEGINDIM":
+        [pos, tt, out] = getNextToken(pos)
+        if len(current.getchildren()) > 0:
+            current.getchildren()[-1].attrib["dim"] = out
+        else:
+            current.attrib["dim"] = out
+        while tt != "ENDDIM":
+            [pos, tt, minor] = getNextToken(pos)
+    elif Token == "ENDE":
         pass
+
     else:
         print "#" + Token + "# ??"
 
