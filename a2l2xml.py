@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#
+# coding: utf-8
 #BSD 2-Clause License
 #
 #Copyright (c) 2016, Eduard Bröcker
@@ -36,7 +36,7 @@ if len(sys.argv) < 3:
 
 inputFile = open(sys.argv[1],"r")
 outputFile = open(sys.argv[2],"w")
-inputBuf = inputFile.read().replace('\n', '')
+inputBuf = inputFile.read().replace('\n', '').decode('utf-8')
 
 length = len(inputBuf)
 
