@@ -203,6 +203,11 @@ def processBlock(current, pos, blkname):
             return startPos
         current.attrib["name"] = name
         [pos, tt, comment] = getNextToken(pos)
+        if tt == "BEGINDIM":
+            [pos, tt, dimension] = getNextToken(pos)
+            current.attrib["dimension"] = dimension
+            [pos, tt, dimension] = getNextToken(pos) # enddim
+            [pos, tt, comment] = getNextToken(pos) # next should be comment
         if tt != "STRING":
             return startPos
         current.attrib["comment"] = comment
