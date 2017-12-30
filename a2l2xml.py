@@ -76,7 +76,8 @@ dataSizes = ['BYTE','WORD','LONG']
 addrTypes = ['PBYTE','PWORD','PLONG','DIRECT']
 byteOrders = ['LITTLE_ENDIAN','BIG_ENDIAN','MSB_LAST','MSB_FIRST']
 indexOrders = ['INDEX_INCR', 'INDEX_DECR']
-
+layoutTypes = ['ROW_DIR', 'COLUMN_DIR']
+conversionTypes = ['IDENTICAL', 'FORM', 'LINEAR', 'RAT_FUNC', 'TAB_INTP', 'TAB_NOINTP', 'TAB_VERB']
 
 def getNextToken(pos):
     while pos < length:
@@ -186,6 +187,12 @@ def processOutline(current, pos, outline):
         current.append(child)
     elif outline in indexOrders:
         child = etree.Element("indexOrder", order=outline)
+        current.append(child)
+    elif outline in layoutTypes:
+        child = etree.Element("layoutType", type=outline)
+        current.append(child)
+    elif outline in conversionTypes:
+        child = etree.Element("conversionType", type=outline)
         current.append(child)
     else:
         child = etree.Element("item", type=outline)
