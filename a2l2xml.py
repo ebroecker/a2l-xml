@@ -252,19 +252,19 @@ def processBlock(current, pos, blkname):
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["val"] = tok
+        current.attrib["position"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["basetype"] = tok
+        current.attrib["datatype"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["col"] = tok
+        current.attrib["index"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["direct"] = tok
+        current.attrib["addrType"] = tok
         return pos
     return startPos
 
