@@ -320,7 +320,10 @@ while pos < length:
         pos = processBlock(current, pos, blockname)
     elif Token == "END":
         [pos, tt, blockname] = getNextToken(pos)
-        current = deepth.pop()
+        try:
+            current = deepth.pop()
+        except:
+            print("Error witch closing: " + inputBuf[pos-10:pos+10])
     elif Token == "INCLUDE":
         [pos, tt, blockname] = getNextToken(pos)
         child = etree.Element("include")
@@ -333,7 +336,10 @@ while pos < length:
         current = child
         pass
     elif Token == "ENDBLOCK":
-        current = deepth.pop()
+        try:
+            current = deepth.pop()
+        except:
+            print("Error witch closing: " + inputBuf[pos-10:pos+10])
     elif Token == "TAGGEDSTRUCT":
         child = etree.Element('taggedstruct')
         current.append(child)
