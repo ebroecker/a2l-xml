@@ -45,9 +45,9 @@ length = len(inputBuf)
 
 types = ['int','uint','uint64','double','float','long','ulong','uchar','char']
 trenner = [' ','[',']','{','}','(',')',',',';','=','\r','\n','/']
-keywords = ['A2ML','A2ML_VERSION ','ADDR_EPK','ALIGNMENT_BYTE','ALIGNMENT_FLOAT32_IEEE',
-'ALIGNMENT_FLOAT64_IEEE','ALIGNMENT_INT64 ','ALIGNMENT_LONG ','ALIGNMENT_WORD','ANNOTATION ',
-'ANNOTATION_LABEL ','ANNOTATION_ORIGIN ','ANNOTATION_TEXT ','ARRAY_SIZE ','ASAP2_VERSION',
+keywords = ['A2ML','A2ML_VERSION','ADDR_EPK','ALIGNMENT_BYTE','ALIGNMENT_FLOAT32_IEEE',
+'ALIGNMENT_FLOAT64_IEEE','ALIGNMENT_INT64','ALIGNMENT_LONG','ALIGNMENT_WORD','ANNOTATION',
+'ANNOTATION_LABEL','ANNOTATION_ORIGIN','ANNOTATION_TEXT','ARRAY_SIZE','ASAP2_VERSION',
 'AXIS_DESCR','AXIS_PTS','AXIS_PTS_REF','AXIS_PTS_X','AXIS_PTS_Y','AXIS_PTS_Z','AXIS_PTS_4','AXIS_PTS_5',
 'AXIS_RESCALE_X','BIT_MASK','BIT_OPERATION','BYTE_ORDER','CALIBRATION_ACCESS','CALIBRATION_HANDLE',
 'CALIBRATION_HANDLE_TEXT','CALIBRATION_METHOD','CHARACTERISTIC','COEFFS','COEFFS_LINEAR','COMPARISON_QUANTITY',
@@ -62,7 +62,7 @@ keywords = ['A2ML','A2ML_VERSION ','ADDR_EPK','ALIGNMENT_BYTE','ALIGNMENT_FLOAT3
 'LOC_MEASUREMENT','MAP_LIST','MATRIX_DIM','MAX_GRAD','MAX_REFRESH','MEASUREMENT','MEMORY_LAYOUT',
 'MEMORY_SEGMENT','MOD_COMMON','MOD_PAR','MODULE','MONOTONY','NO_AXIS_PTS_X','NO_AXIS_PTS_Y','NO_AXIS_PTS_Z',
 'NO_AXIS_PTS_4','NO_AXIS_PTS_5','NO_OF_INTERFACES','NO_RESCALE_X','NUMBER','OFFSET_X','OFFSET_Y','OFFSET_Z',
-'OFFSET_4','OFFSET_5','OUT_MEASUREMENT','PHONE_NO','PHYS_UNIT','PROJECT','PROJECT_NO','READ_ONLY','READ_WRITE',
+'OFFSET_4','OFFSET_5', 'OPTIONAL_CMD', 'OUT_MEASUREMENT','PHONE_NO','PHYS_UNIT','PROJECT','PROJECT_NO','READ_ONLY','READ_WRITE',
 'RECORD_LAYOUT','REF_CHARACTERISTIC','REF_GROUP','REF_MEASUREMENT','REF_MEMORY_SEGMENT','REF_UNIT','RESERVED',
 'RIGHT_SHIFT','RIP_ADDR_W','RIP_ADDR_X','RIP_ADDR_Y','RIP_ADDR_Z','RIP_ADDR_4','RIP_ADDR_5','ROOT','SHIFT_OP_X',
 'SHIFT_OP_Y','SHIFT_OP_Z','SHIFT_OP_4','SHIFT_OP_5','SIGN_EXTEND','SI_EXPONENTS','SRC_ADDR_X','SRC_ADDR_Y',
@@ -76,7 +76,13 @@ dataSizes = ['BYTE','WORD','LONG']
 addrTypes = ['PBYTE','PWORD','PLONG','DIRECT']
 byteOrders = ['LITTLE_ENDIAN','BIG_ENDIAN','MSB_LAST','MSB_FIRST']
 indexOrders = ['INDEX_INCR', 'INDEX_DECR']
+layoutTypes = ['ROW_DIR', 'COLUMN_DIR']
+conversionTypes = ['IDENTICAL','FORM','LINEAR','RAT_FUNC','TAB_INTP','TAB_NOINTP','TAB_VERB']
 
+xcpOnCanTypes = ['BTL_CYCLES','CAN_ID_BROADCAST','CAN_ID_MASTER','CAN_ID_MASTER_INCREMENTAL','CAN_ID_SLAVE','CAN_ID_GET_DAQ_CLOCK_MULTICAST','BAUDRATE','SAMPLE_POINT','SAMPLE_RATE','SJW','SYNC_EDGE''DAQ_LIST_CAN_ID','EVENT_CAN_ID_LIST', 'MAX_BUS_LOAD','MAX_DLC_REQUIRED','MEASUREMENT_SPLIT_ALLOWED','CAN_FD','MAX_DLC','CAN_FD_DATA_TRANSFER_BAUDRATE','SECONDARY_SAMPLE_POINT','TRANSCEIVER_DELAY_COMPENSATION']
+xcpOnFlexRayTypes = ['FLX_BUF','MAX_FLX_LEN_BUF','LPDU_ID','FLX_SLOT_ID','OFFSET','CYCLE_REPETITION','CHANNEL','XCP_PACKET','INITIAL_CMD_BUFFER','INITIAL_RES_ERR_BUFFER','POOL_BUFFER']
+xcpOnFlxRayXcpPacketTypes = ['CMD','RES_ERR','EV_SERV','DAQ','STIM','MULTICAST']
+xcpOnFlxRayHeaderNaxTypes = ['HEADER_NAX', 'HEADER_NAX_FILL','HEADER_NAX_CTR','HEADER_NAX_FILL3','HEADER_NAX_CTR_FILL2','HEADER_NAX_LEN','HEADER_NAX_CTR_LEN','HEADER_NAX_FILL2_LEN','HEADER_NAX_CTR_FILL_LEN']
 
 def getNextToken(pos):
     while pos < length:
@@ -187,6 +193,24 @@ def processOutline(current, pos, outline):
     elif outline in indexOrders:
         child = etree.Element("indexOrder", order=outline)
         current.append(child)
+    elif outline in layoutTypes:
+        child = etree.Element("layoutType", type=outline)
+        current.append(child)
+    elif outline in conversionTypes:
+        child = etree.Element("conversionType", type=outline)
+        current.append(child)
+    elif outline in xcpOnCanTypes:
+        child = etree.Element("xcpOnCan", type=outline)
+        current.append(child)
+    elif outline in xcpOnFlexRayTypes:
+        child = etree.Element("xcpOnFlexRay", type=outline)
+        current.append(child)
+    elif outline in xcpOnFlxRayXcpPacketTypes:
+        child = etree.Element("xcpOnFlxRayXcpPacketType", type=outline)
+        current.append(child)
+    elif outline in xcpOnFlxRayHeaderNaxTypes:
+        child = etree.Element("xcpOnFlxRayHeaderNaxType", type=outline)
+        current.append(child)
     else:
         child = etree.Element("item", type=outline)
         current.append(child)
@@ -245,19 +269,19 @@ def processBlock(current, pos, blkname):
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["val"] = tok
+        current.attrib["position"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["basetype"] = tok
+        current.attrib["datatype"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["col"] = tok
+        current.attrib["index"] = tok
         [pos, tt, tok] = getNextToken(pos)
         if tt != "OUTLINE":
             return startPos
-        current.attrib["direct"] = tok
+        current.attrib["addrType"] = tok
         return pos
     return startPos
 
