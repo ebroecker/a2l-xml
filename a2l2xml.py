@@ -81,8 +81,6 @@ conversionTypes = ['IDENTICAL','FORM','LINEAR','RAT_FUNC','TAB_INTP','TAB_NOINTP
 
 xcpOnCanTypes = ['BTL_CYCLES','CAN_ID_BROADCAST','CAN_ID_MASTER','CAN_ID_MASTER_INCREMENTAL','CAN_ID_SLAVE','CAN_ID_GET_DAQ_CLOCK_MULTICAST','BAUDRATE','SAMPLE_POINT','SAMPLE_RATE','SJW','SYNC_EDGE''DAQ_LIST_CAN_ID','EVENT_CAN_ID_LIST', 'MAX_BUS_LOAD','MAX_DLC_REQUIRED','MEASUREMENT_SPLIT_ALLOWED','CAN_FD','MAX_DLC','CAN_FD_DATA_TRANSFER_BAUDRATE','SECONDARY_SAMPLE_POINT','TRANSCEIVER_DELAY_COMPENSATION']
 xcpOnFlexRayTypes = ['FLX_BUF','MAX_FLX_LEN_BUF','LPDU_ID','FLX_SLOT_ID','OFFSET','CYCLE_REPETITION','CHANNEL','XCP_PACKET','INITIAL_CMD_BUFFER','INITIAL_RES_ERR_BUFFER','POOL_BUFFER']
-xcpOnFlxRayXcpPacketTypes = ['CMD','RES_ERR','EV_SERV','DAQ','STIM','MULTICAST']
-xcpOnFlxRayHeaderNaxTypes = ['HEADER_NAX', 'HEADER_NAX_FILL','HEADER_NAX_CTR','HEADER_NAX_FILL3','HEADER_NAX_CTR_FILL2','HEADER_NAX_LEN','HEADER_NAX_CTR_LEN','HEADER_NAX_FILL2_LEN','HEADER_NAX_CTR_FILL_LEN']
 
 def getNextToken(pos):
     while pos < length:
@@ -204,12 +202,6 @@ def processOutline(current, pos, outline):
         current.append(child)
     elif outline in xcpOnFlexRayTypes:
         child = etree.Element("xcpOnFlexRay", type=outline)
-        current.append(child)
-    elif outline in xcpOnFlxRayXcpPacketTypes:
-        child = etree.Element("xcpOnFlxRayXcpPacketType", type=outline)
-        current.append(child)
-    elif outline in xcpOnFlxRayHeaderNaxTypes:
-        child = etree.Element("xcpOnFlxRayHeaderNaxType", type=outline)
         current.append(child)
     else:
         child = etree.Element("item", type=outline)
