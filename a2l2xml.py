@@ -94,11 +94,15 @@ def getNextToken(pos):
             pos = pos+2
 #           return [pos, "COMMENT", inputBuf[startpos:pos]]
         elif inputBuf[pos] == '"':
+            retStr = ""
             pos = pos + 1
             startpos = pos
             while pos < length and not inputBuf[pos] == '"':
-                pos = pos + 1
-            return [pos+1, "STRING", inputBuf[startpos:pos]]
+                if inputBuf[pos] == '\\':
+                    pos += 1
+                retStr += inputBuf[pos]
+                pos  += 1
+            return [pos+1, "STRING", retStr]
 
         elif inputBuf[pos:pos+6] == "struct":
             return [pos+6, "STRUCT", ""]
@@ -323,7 +327,7 @@ while pos < length:
         try:
             current = deepth.pop()
         except:
-            print("Error witch closing: " + inputBuf[pos-10:pos+10])
+            print("Error witch closing: " + inputBuf[pos-100:pos+100])
     elif Token == "INCLUDE":
         [pos, tt, blockname] = getNextToken(pos)
         child = etree.Element("include")
