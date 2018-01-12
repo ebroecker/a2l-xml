@@ -79,9 +79,6 @@ indexOrders = ['INDEX_INCR', 'INDEX_DECR']
 layoutTypes = ['ROW_DIR', 'COLUMN_DIR']
 conversionTypes = ['IDENTICAL','FORM','LINEAR','RAT_FUNC','TAB_INTP','TAB_NOINTP','TAB_VERB']
 
-xcpOnCanTypes = ['BTL_CYCLES','CAN_ID_BROADCAST','CAN_ID_MASTER','CAN_ID_MASTER_INCREMENTAL','CAN_ID_SLAVE','CAN_ID_GET_DAQ_CLOCK_MULTICAST','BAUDRATE','SAMPLE_POINT','SAMPLE_RATE','SJW','SYNC_EDGE''DAQ_LIST_CAN_ID','EVENT_CAN_ID_LIST', 'MAX_BUS_LOAD','MAX_DLC_REQUIRED','MEASUREMENT_SPLIT_ALLOWED','CAN_FD','MAX_DLC','CAN_FD_DATA_TRANSFER_BAUDRATE','SECONDARY_SAMPLE_POINT','TRANSCEIVER_DELAY_COMPENSATION']
-xcpOnFlxTypes = ['FLX_BUF','MAX_FLX_LEN_BUF','LPDU_ID','FLX_SLOT_ID','OFFSET','CYCLE_REPETITION','CHANNEL','XCP_PACKET','INITIAL_CMD_BUFFER','INITIAL_RES_ERR_BUFFER','POOL_BUFFER']
-
 def getNextToken(pos):
     while pos < length:
         if inputBuf[pos:pos+2] == "/*":
@@ -200,12 +197,6 @@ def processOutline(current, pos, outline):
         current.append(child)
     elif outline in conversionTypes:
         child = etree.Element("conversionType", type=outline)
-        current.append(child)
-    elif outline in xcpOnCanTypes:
-        child = etree.Element("xcpOnCan", type=outline)
-        current.append(child)
-    elif outline in xcpOnFlxTypes:
-        child = etree.Element("xcpOnFlx", type=outline)
         current.append(child)
     else:
         child = etree.Element("item", type=outline)
