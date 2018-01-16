@@ -244,32 +244,6 @@ def processBlock(current, pos, blkname):
             return startPos
         current.attrib["comment"] = comment
         return pos
-    elif blkname == "RECORD_LAYOUT":
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["name"] = tok
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["type"] = tok
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["position"] = tok
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["datatype"] = tok
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["index"] = tok
-        [pos, tt, tok] = getNextToken(pos)
-        if tt != "OUTLINE":
-            return startPos
-        current.attrib["addrType"] = tok
-        return pos
     return startPos
 
 
