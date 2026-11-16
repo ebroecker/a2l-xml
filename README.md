@@ -9,3 +9,4 @@ The generated xml is very basic and maybe errorprone too.
 
 Maybe someone has some usecase for this software.
 
+**Unmaintained, see mrom1/a2lparser / pyA2L**
